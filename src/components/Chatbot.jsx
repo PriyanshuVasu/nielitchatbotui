@@ -20,14 +20,17 @@ export default function Chatbot() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input }),
-      });
+        const res = await fetch("https://68fae73015230.notebooks.jarvislabs.net/proxy/8000/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            prompt: input,
+            max_new_tokens: 100
+          }),
+        });
 
-      const data = await res.json();
-      const botMessage = { sender: "bot", text: data.reply };
+        const data = await res.json();
+        const botMessage = { sender: "bot", text: data.response };
       setMessages((prev) => [...prev, botMessage]);
     } catch (err) {
       setMessages((prev) => [
